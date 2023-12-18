@@ -5,13 +5,14 @@ const Sub = struct {
     replace: []const u8,
 };
 
-const subs: [15]Sub = .{
+const subs: [16]Sub = .{
     Sub{ .search = "eightwo", .replace = "82" },
     Sub{ .search = "oneight", .replace = "18" },
     Sub{ .search = "twone", .replace = "21" },
     Sub{ .search = "nineight", .replace = "98" },
     Sub{ .search = "fiveight", .replace = "58" },
     Sub{ .search = "sevenine", .replace = "79" },
+    Sub{ .search = "threeight", .replace = "38" },
     Sub{ .search = "one", .replace = "1" },
     Sub{ .search = "two", .replace = "2" },
     Sub{ .search = "three", .replace = "3" },

@@ -1,9 +1,5 @@
 const std = @import("std");
 
-const red: i8 = 12;
-const green: i8 = 13;
-const blue: i8 = 14;
-
 const Move = struct {
     red: u8,
     green: u8,
@@ -30,24 +26,34 @@ pub fn main() !void {
     var it = std.mem.tokenizeAny(u8, read_buf, "\n");
     while (it.next()) |row| {
         const sep = std.mem.indexOfScalar(u8, row, ':').?;
-        const game_id = try parse_game(row[0..sep]);
+        // const game_id = try parse_game(row[0..sep]);
+        // _ = game_id;
         const hands = row[sep + 1 ..];
-        if (try validate_game(hands)) {
-            total += game_id;
-        }
+        total += try calculate_min_game_amount(hands);
     }
     std.debug.print("{d}\n", .{total});
 }
 
-fn validate_game(hands: []const u8) !bool {
+fn calculate_min_game_amount(hands: []const u8) !u32 {
     var moves = std.mem.tokenizeAny(u8, hands, ";");
-    while (moves.next()) |hand| {
-        const m = try decode_move(hand);
-        if (m.red > red or m.green > green or m.blue > blue) {
-            return false;
+
+    var red: u32 = 0;
+    var green: u32 = 0;
+    var blue: u32 = 0;
+    while (moves.next()) |move| {
+        const m = try decode_move(move);
+        if (m.red > red) {
+            red = m.red;
+        }
+        if (m.green > green) {
+            green = m.green;
+        }
+
+        if (m.blue > blue) {
+            blue = m.blue;
         }
     }
-    return true;
+    return red * green * blue;
 }
 
 fn decode_move(hand: []const u8) !Move {
